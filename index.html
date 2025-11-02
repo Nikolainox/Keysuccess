@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sensei Flow v9</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Poppins:wght@600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Top bar -->
+  <header class="topbar">
+    <div class="wrap head-row">
+      <div class="brand">
+        <div class="title-line">
+          <h1>Sensei Flow</h1>
+          <span class="build-pill">v9</span>
+        </div>
+        <div class="muted small">AI 60% • Brand 25% • Law&Comm 15%</div>
+      </div>
+
+      <nav id="tabs" class="tabs">
+        <button data-tab="today" class="active" title="Today">🧭 Today</button>
+        <button data-tab="roadmap" title="90-Day Plan">🗺 Roadmap</button>
+        <button data-tab="books" title="Books">📚 Books</button>
+        <button data-tab="dashboard" title="Dashboard">📊 Dashboard</button>
+        <button data-tab="settings" title="Settings">⚙️ Settings</button>
+      </nav>
+
+      <div class="save-area">
+        <button class="btn ghost smallbtn" onclick="manualSave()">💾 Save</button>
+        <div id="saveToast" class="toast hidden">Saved ✓</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="wrap">
+
+    <!-- TODAY TAB -->
+    <section id="today" class="tab">
+      <div class="row">
+        <div class="pill">Day <b id="currentDay">1</b> / 90</div>
+        <div class="muted small">Auto-loaded from Roadmap</div>
+        <div class="right"><button class="btn ghost smallbtn" onclick="save()">Save</button></div>
+      </div>
+
+      <div class="grid g3">
+        <!-- BLOCK A / AI -->
+        <div class="card">
+          <div class="row"><h2>Block A — AI</h2><span class="pill">90 min</span></div>
+
+          <label>Topic</label>
+          <input id="aTopic" placeholder="Topic auto-filled (AI / Tech)">
+
+          <label>Link</label>
+          <div class="row">
+            <input id="aLink" type="url" placeholder="https://...">
+            <button class="btn right smallbtn" onclick="openLink('a')">Open</button>
+          </div>
+
+          <label>Do now</label>
+          <div id="aTasks"></div>
+          <div class="row">
+            <input id="aNew" placeholder="+ task">
+            <button class="btn smallbtn" onclick="addTask('a')">Add</button>
+          </div>
+
+          <hr>
+
+          <div class="row block-bottom">
+            <button class="btn primary smallbtn" onclick="startFocus('A')">Focus 90:00</button>
+            <div id="timerA" class="timer">90:00</div>
+            <button class="btn right smallbtn" onclick="finishBlock('a')">Mark Done (+XP)</button>
+          </div>
+        </div>
+
+        <!-- BLOCK B / BRAND -->
+        <div class="card">
+          <div class="row"><h2>Block B — Brand</h2><span class="pill">90 min</span></div>
+
+          <label>Topic</label>
+          <input id="bTopic" placeholder="Topic auto-filled (Brand / Marketing)">
+
+          <label>Link</label>
+          <div class="row">
+            <input id="bLink" type="url" placeholder="https://...">
+            <button class="btn right smallbtn" onclick="openLink('b')">Open</button>
+          </div>
+
+          <label>Do now</label>
+          <div id="bTasks"></div>
+          <div class="row">
+            <input id="bNew" placeholder="+ task">
+            <button class="btn smallbtn" onclick="addTask('b')">Add</button>
+          </div>
+
+          <hr>
+
+          <div class="row block-bottom">
+            <button class="btn primary smallbtn" onclick="startFocus('B')">Focus 90:00</button>
+            <div id="timerB" class="timer">90:00</div>
+            <button class="btn right smallbtn" onclick="finishBlock('b')">Mark Done (+XP)</button>
+          </div>
+        </div>
+
+        <!-- BLOCK C / LAW & COMM -->
+        <div class="card">
+          <div class="row"><h2>Block C — Law & Comm</h2><span class="pill">90 min</span></div>
+
+          <label>Topic</label>
+          <input id="cTopic" placeholder="Topic auto-filled (Business Law / Communication)">
+
+          <label>Link</label>
+          <div class="row">
+            <input id="cLink" type="url" placeholder="https://...">
+            <button class="btn right smallbtn" onclick="openLink('c')">Open</button>
+          </div>
+
+          <label>Do now</label>
+          <div id="cTasks"></div>
+          <div class="row">
+            <input id="cNew" placeholder="+ task">
+            <button class="btn smallbtn" onclick="addTask('c')">Add</button>
+          </div>
+
+          <hr>
+
+          <div class="row block-bottom">
+            <button class="btn primary smallbtn" onclick="startFocus('C')">Focus 90:00</button>
+            <div id="timerC" class="timer">90:00</div>
+            <button class="btn right smallbtn" onclick="finishBlock('c')">Mark Done (+XP)</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- REFLECTION -->
+      <div class="grid g2" style="margin-top:12px">
+        <div class="card">
+          <h3>Daily Notes</h3>
+          <textarea id="notesToday" placeholder="What did I learn / what matters for my future?"></textarea>
+        </div>
+        <div class="card">
+          <h3>Reflection</h3>
+          <textarea id="reflection" placeholder="One sentence: how do I get better tomorrow?"></textarea>
+          <div class="row" style="margin-top:8px">
+            <button class="btn primary smallbtn" onclick="saveDay()">Save Day</button>
+            <button class="btn ghost smallbtn right" onclick="nextDay()">Next Day →</button>
+          </div>
+        </div>
+      </div>
+
+    </section>
+    <!-- /TODAY TAB -->
+
+    <!-- ROADMAP TAB -->
+    <section id="roadmap" class="tab hidden">
+      <div class="row">
+        <button class="btn smallbtn" id="fillPlan">Fill full 90 days (FREE)</button>
+        <button class="btn ghost smallbtn" onclick="clearPlan()">Clear</button>
+        <span class="pill">Auto-loads Today view</span>
+      </div>
+
+      <div id="planList" class="grid g3" style="margin-top:12px"></div>
+    </section>
+
+    <!-- BOOKS TAB -->
+    <section id="books" class="tab hidden">
+      <div class="row">
+        <h2>Books & Audio Learning</h2>
+        <div class="right muted small">Open → learn → write 2–3 bullets</div>
+      </div>
+      <div id="booksList" class="grid g3" style="margin-top:12px"></div>
+    </section>
+
+    <!-- DASHBOARD TAB -->
+    <section id="dashboard" class="tab hidden">
+      <div class="grid g3">
+        <div class="card">
+          <div class="row">
+            <div>
+              <div class="muted small">Day</div>
+              <div class="kpi" id="dayLabel">Day 1 / 90</div>
+              <div class="small muted">Start: <span id="startDate"></span></div>
+            </div>
+            <div class="right ring">
+              <svg width="160" height="160">
+                <circle cx="80" cy="80" r="70" stroke="#1b2a3a" stroke-width="12" fill="none"></circle>
+                <circle id="ringProg" cx="80" cy="80" r="70" stroke="url(#grad)" stroke-width="12" fill="none" stroke-linecap="round" stroke-dasharray="439.6" stroke-dashoffset="439.6"></circle>
+                <defs>
+                  <linearGradient id="grad" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#00bfff"></stop>
+                    <stop offset="100%" stop-color="#8b5cf6"></stop>
+                  </linearGradient>
+                </defs>
+              </svg>
+              <div class="label">
+                <div><b id="progPct">0%</b><div class="small muted">complete</div></div>
+              </div>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <span class="badge">Level <b id="lvl">1</b></span>
+            <span class="badge">XP <b id="xp">0</b> / <span id="xpNext">100</span></span>
+            <span class="badge">Streak <b id="streak">0</b> 🔥</span>
+            <button class="btn right smallbtn" onclick="goTab('today')">Start Today</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Skill Radar</h3>
+          <div class="radar" id="radarBox"></div>
+          <div class="row" style="margin-top:6px">
+            <span class="tag">AI: <b id="aiScore">0</b></span>
+            <span class="tag">Brand: <b id="brandScore">0</b></span>
+            <span class="tag">Law: <b id="lawScore">0</b></span>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Sensei Line</h3>
+          <div id="senseiFeedback" class="small">Finish all 3 blocks to build streak.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SETTINGS TAB -->
+    <section id="settings" class="tab hidden">
+      <div class="grid g2">
+        <div class="card">
+          <h3>Basics</h3>
+          <div class="row">
+            <label class="pill">Start date <input id="start" type="date"></label>
+            <label class="pill">Current day <input id="dayNum" type="number" min="1" max="90" style="width:90px"></label>
+            <button class="btn smallbtn" onclick="saveBase()">Save</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Backup</h3>
+          <div class="row">
+            <button class="btn smallbtn" onclick="exportData()">Export Backup (.json)</button>
+            <label class="pill">
+              <input type="file" id="importFile" accept="application/json" style="display:none" onchange="importData(event)">
+              <span style="cursor:pointer" onclick="document.getElementById('importFile').click()">Import Backup</span>
+            </label>
+          </div>
+          <div class="small muted" style="margin-top:8px">Export weekly so you never lose progress.</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap row">
+      <div class="small muted">All data stays on your device. Ctrl+S = quick save.</div>
+      <div class="right"><button class="btn ghost smallbtn" onclick="manualSave()">💾 Save</button></div>
+    </div>
+  </footer>
+
+  <!-- FOCUS OVERLAY -->
+  <div id="focusOverlay">
+    <div class="focusBox">
+      <h2>Flow Timer</h2>
+      <div id="focusWhat" class="small" style="opacity:.8;margin-bottom:8px"></div>
+      <div id="focusTimer" class="focusTimer">90:00</div>
+      <div class="small" style="margin-bottom:10px">Breathe 4–4–4 • Stretch at 25 / 50 / 75 min</div>
+      <button class="btn smallbtn" onclick="stopFocus()">Exit</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
